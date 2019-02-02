@@ -28,7 +28,31 @@ Output:
 */
 
 function transformer(ast) {
-  const newAst = [];
+  let newAst = [];
+
+  ast = ast.filter(v => v.type !== "annotation");
+  ast.forEach(rule => {
+    if (rule.type === "rule") {
+      newAst.push([rule]);
+    }
+    if (rule.type === "sub_rule") {
+      newAst[newAst.length - 1].push(rule);
+    }
+  });
+  newAst = newAst.map(rules => {
+    let rule = {
+      target: rules[0].value[0],
+      origin: rules[0].value[1],
+      headers: []
+    };
+    rules.slice(1).forEach(subrule => {
+      rule.headers.push({
+        method: subrule.value[0],
+        value: subrule.value[1]
+      });
+    });
+    return rule;
+  });
 
   return newAst;
 }
@@ -39,7 +63,7 @@ if (require.main === module) {
   const tokenizer = require("./tokenizer");
   const parser = require("./parser");
   const fs = require("fs");
-  const input = fs.readFileSync("./.hostsxy.simple", {
+  const input = fs.readFileSync("./.hostsxy", {
     encoding: "utf-8"
   });
 
