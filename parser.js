@@ -49,6 +49,8 @@ function parser(tokens) {
   return AST;
 }
 
+module.exports = parser;
+
 if (require.main === module) {
   const TOKENS = [
     { type: "paren", value: "(" },

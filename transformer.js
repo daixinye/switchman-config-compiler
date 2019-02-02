@@ -28,6 +28,54 @@ function traverser(ast, visitor) {
   traverserNode(ast, null);
 }
 
+function transformer(AST) {
+  const newAST = {
+    type: "Program",
+    body: []
+  };
+
+  AST._context = newAST.body;
+
+  const visitor = {
+    Program(node, parent) {
+      return node;
+    },
+    CallExpression(node, parent) {
+      let expression = {
+        type: "CallExpression",
+        callee: {
+          type: "Identifier",
+          name: node.name
+        },
+        arguments: []
+      };
+
+      node._context = expression.arguments;
+
+      if (parent.type !== "CallExpression") {
+        expression = {
+          type: "ExpressionStatement",
+          expression
+        };
+      }
+
+      parent._context.push(expression);
+    },
+    NumberLiteral(node, parent) {
+      parent._context.push({
+        type: "NumberLiteral",
+        value: node.value
+      });
+    }
+  };
+
+  traverser(AST, visitor);
+
+  return newAST;
+}
+
+module.exports = transformer;
+
 if (require.main === module) {
   const AST = {
     type: "Program",
@@ -59,18 +107,5 @@ if (require.main === module) {
     ]
   };
 
-  const visitor = {
-    Program(node, parent) {
-      return node;
-    },
-    CallExpression(node, parent) {
-      return node;
-    },
-    NumberLiteral(node, parent) {
-      return node;
-    }
-  };
-
-  traverser(AST, visitor);
-  console.log(JSON.stringify(AST, null, 2));
+  console.log(JSON.stringify(transformer(AST), null, 2));
 }

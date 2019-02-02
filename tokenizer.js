@@ -66,6 +66,8 @@ function tokenizer(input) {
   return tokens;
 }
 
+module.exports = tokenizer;
+
 if (require.main === module) {
   const INPUT = "(add 2 (subtract 4 2))";
   const tokens = tokenizer(INPUT);
