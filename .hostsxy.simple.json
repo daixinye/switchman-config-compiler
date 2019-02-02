@@ -1,0 +1,25 @@
+[
+  {
+    "origin": {
+      "protocol": "http:",
+      "hostname": "www.daixinye.com",
+      "path": "/path"
+    },
+    "target": {
+      "hostname": "127.0.0.1",
+      "port": "8000",
+      "headers": [
+        {
+          "name": "host",
+          "operator": "=",
+          "value": "test.daixinye.com"
+        },
+        {
+          "name": "cookie",
+          "operator": "+",
+          "value": "hostsxy=true;"
+        }
+      ]
+    }
+  }
+]

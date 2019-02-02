@@ -1,0 +1,4 @@
+# 这里是注释，也许会有 空格 之类的隔开哦
+127.0.0.1:8000 http://www.daixinye.com/path
+  =Host test.daixinye.com
+  +Cookie hostsxy=true;
