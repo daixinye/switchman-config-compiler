@@ -10,12 +10,12 @@
       "port": "8000",
       "headers": [
         {
-          "name": "host",
+          "header": "host",
           "operator": "=",
           "value": "test.daixinye.com"
         },
         {
-          "name": "cookie",
+          "header": "cookie",
           "operator": "+",
           "value": "hostsxy=true;"
         }
