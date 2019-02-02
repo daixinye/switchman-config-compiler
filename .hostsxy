@@ -1,0 +1,22 @@
+# 基本转发
+# 将发往 www.daixinye.com 的HTTP(S)请求都发向 127.0.0.1
+127.0.0.1 www.daixinye.com
+
+# 将发往 www.daixinye.com 的HTTP请求都发向 127.0.0.1
+127.0.0.1 http://www.daixinye.com
+
+# 将发往 www.daixinye.com 的HTTPS请求都发向 127.0.0.1
+127.0.0.1 https://www.daixineye.com
+
+# 将发往 www.daixinye.com 的HTTP(S)请求都发向 127.0.0.1:8080
+127.0.0.1:8080 www.daixinye.com 
+
+# 将发往 www.daixinye.com/path 的HTTP(S)请求都发向 127.0.0.1
+127.0.0.1 www.daixinye.com/path
+
+# Header 配置
+127.0.0.1 www.daixinye.com
+  # 设置 Host Header 为 test.daixinye.com
+  =Host test.daixinye.com
+  # 在已有的 Cookie 末尾添加 hostsxy=true
+  +Cookie hostsxy=true;
