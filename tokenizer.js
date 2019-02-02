@@ -27,8 +27,80 @@
  *  ]
  *  ```
  */
+
+const WHITESPACE = /\s/;
+const NEWLINE = /\n/;
+const STRING = /[a-zA-Z0-9.:;=+/\u4e00-\u9fa5\u3002\uff1b\uff0c\uff1a\u201c\u201d\uff08\uff09\u3001\uff1f\u300a\u300b]/;
+
 function tokenizer(input) {
-  return input;
+  let current = 0;
+  const tokens = [];
+
+  while (current < input.length) {
+    let char = input[current];
+
+    // hash
+    if (char === "#") {
+      tokens.push({
+        type: "hash",
+        value: char
+      });
+      current++;
+      continue;
+    }
+
+    // newline
+    if (NEWLINE.test(char)) {
+      tokens.push({
+        type: "newline",
+        value: "\n"
+      });
+      current++;
+      continue;
+    }
+
+    // whitespace or tab
+    if (WHITESPACE.test(char)) {
+      nextChar = input[++current];
+      if (WHITESPACE.test(nextChar) && current < input.length) {
+        tokens.push({
+          type: "tab",
+          value: "  "
+        });
+        current++;
+        continue;
+      } else {
+        continue;
+      }
+    }
+
+    // string
+    if (STRING.test(char)) {
+      let string = "";
+      while (STRING.test(char) && current < input.length) {
+        string += char;
+        current++;
+        char = input[current];
+      }
+      tokens.push({
+        type: "string",
+        value: string
+      });
+      continue;
+    }
+
+    throw TypeError(`${current} ${char}`);
+  }
+  return tokens;
 }
 
 module.exports = tokenizer;
+
+if (require.main === module) {
+  const fs = require("fs");
+  const input = fs.readFileSync("./.hostsxy.simple", {
+    encoding: "utf-8"
+  });
+
+  console.log(tokenizer(input));
+}
